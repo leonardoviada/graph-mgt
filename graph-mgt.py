@@ -18,6 +18,8 @@
 ---------------------------------------------
 """
 
+import random
+
 
 class Nodo:
 
@@ -26,8 +28,13 @@ class Nodo:
         self.label = label
         self.adList = adList
 
-    # Aggiunge Adiacenza
+    # newAd - AGGIUNGE ADIACENZA
+    # RICEVE:
+    #   label del nodo di destinazione
+    #   peso dell'arco da creare - se passiamo solo (label, "rand") viene generato un peso random da 1 a 21 -
     def newAd(self, label, weight):
+        if (weight == "rand"):
+            weight = random.randrange(1, 21)
         newArco = Arco(label, weight)
         self.adList.append(newArco)
 
@@ -61,6 +68,7 @@ class Arco:
         self.nextHop = nextHop
         self.weight = weight
 
+    # toString()
     def __str__(self):
         return self.nextHop.__str__() + ", " + self.weight.__str__()
 
@@ -75,9 +83,11 @@ B = Nodo("B", [])
 C = Nodo("C", [])
 
 print("\nAggiungo adiacenze casuali...")
-A.newAd("B", 4)
-B.newAd("A", 3)
-C.newAd("A", 7)
+test = B.newAd("A", "rand")
+C.newAd("A", "rand")
+C.newAd("B", "rand")
+C.newAd("C", "rand")
+A.newAd("B", "rand")
 
 print("\nStampo risultati...")
 print(A)
@@ -88,6 +98,14 @@ print("\nRimuovo arco fra A e C...")
 A.removeAd("C")
 print(A)
 
-print("Modifichiamo il peso dell'arco fra B e A - da 3 a 11")
+print("\nModifichiamo il peso dell'arco fra B e A (settiamo a 11)")
 B.editAd("A", 11)
+print(B)
+
+print("\nGeneriamo un nuovo nodo C...")
+D = Arco("B", 6)
+print(C)
+
+print("\nAggiungo arco fra B e C, di peso 5...")
+B.newAd("C", 5)
 print(B)
