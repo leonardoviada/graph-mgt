@@ -1,5 +1,5 @@
 # graph-mgt
-Simplified graph management tool for Python 3.x for educational purposes
+Simplified graph management tool in Python 3.x for educational purposes
 
 ---------------------------------------------
 	v1.0 (Dicembre 2019)
