@@ -87,3 +87,7 @@ print(C)
 print("\nRimuovo arco fra A e C...")
 A.removeAd("C")
 print(A)
+
+print("Modifichiamo il peso dell'arco fra B e A - da 3 a 11")
+B.editAd("A", 11)
+print(B)
