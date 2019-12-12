@@ -9,8 +9,8 @@
 			* Definizione Nodi - Label e Adiacenze
 			* Definizione Archi - Peso
 
-		# Applicazione Funzioni di Lettura e Ricerca 
-	
+		# Applicazione Funzioni di Lettura e Ricerca
+
 ---------------------------------------------
 	ITIS Delpozzo Cuneo
 	Spec. Informatica
@@ -44,12 +44,14 @@ class Grafo:
         for n in range(nNodes):
             temp = random.choice(charSet)
             self.newNode(temp, [])
-            charSetAvail = charSetAvail + temp
+            charSetAvail += temp
+
             self.nodesList[n].newAd(random.choice(
                 charSetAvail), random.randrange(1, 21))
-        print("Nodi Creati" + charSetAvail)
+        print("Nodi Creati > " + charSetAvail)
 
     # toString()
+
     def __str__(self):
         return "label: " + self.label + ", nodesList: " + str([str(item) for item in self.nodesList])
 
@@ -65,11 +67,11 @@ class Nodo:
     # RICEVE:
     #   label del nodo di destinazione
     #   peso dell'arco da creare - se passiamo solo (label, "rand") viene generato un peso random da 1 a 21 -
-    def newAd(self, label, weight):
+    def newAd(self, nextHop, weight):
         # TODO: implementare controllo su labels del grafo
         if (weight == "rand"):
             weight = random.randrange(1, 21)
-        newArco = Arco(label, weight)
+        newArco = Arco(nextHop, weight)
         self.adList.append(newArco)
 
     # Rimuove Adiacenza
@@ -117,5 +119,8 @@ class Arco:
 # ------
 
 print("Generazione Grafo Casuale")
+
 g = Grafo("mioGrafo", 11)
+print(g)
+g.nodesList[0].newAd("S", 25)
 print(g)
