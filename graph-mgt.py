@@ -21,6 +21,39 @@
 import random
 
 
+class Grafo:
+
+    nodesList = []
+
+    # Costruttore
+    def __init__(self, label, nodesList):
+        self.label = label
+        if(isinstance(nodesList, int)):
+            self.seed(nodesList)
+        else:
+            self.nodesList = nodesList
+
+    # Aggiungi Nuovo Nodo
+    def newNode(self, label, adList):
+        newNode = Nodo(label, adList)
+        self.nodesList.append(newNode)
+
+    def seed(self, nNodes):
+        charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        charSetAvail = ''
+        for n in range(nNodes):
+            temp = random.choice(charSet)
+            self.newNode(temp, [])
+            charSetAvail = charSetAvail + temp
+            self.nodesList[n].newAd(random.choice(
+                charSetAvail), random.randrange(1, 21))
+        print("Nodi Creati" + charSetAvail)
+
+    # toString()
+    def __str__(self):
+        return "label: " + self.label + ", nodesList: " + str([str(item) for item in self.nodesList])
+
+
 class Nodo:
 
     # Costruttore
@@ -33,6 +66,7 @@ class Nodo:
     #   label del nodo di destinazione
     #   peso dell'arco da creare - se passiamo solo (label, "rand") viene generato un peso random da 1 a 21 -
     def newAd(self, label, weight):
+        # TODO: implementare controllo su labels del grafo
         if (weight == "rand"):
             weight = random.randrange(1, 21)
         newArco = Arco(label, weight)
@@ -56,9 +90,14 @@ class Nodo:
                 trovato = True
                 self.adList[n].weight = newWeight
 
+    # Cambia Nome Nodo
+    def editLabel(self, newLabel):
+        # TODO: implementare controllo su labels del grafo
+        self.label = newLabel
+
     # toString()
     def __str__(self):
-        return "label: " + self.label + ", adList: " + str([str(item) for item in self.adList])
+        return self.label + ">" + str([str(item) for item in self.adList])
 
 
 class Arco:
@@ -70,42 +109,13 @@ class Arco:
 
     # toString()
     def __str__(self):
-        return self.nextHop.__str__() + ", " + self.weight.__str__()
+        return self.nextHop.__str__() + "-" + self.weight.__str__()
 
 
 # ------
 # Main di Prova
 # ------
 
-print("Genero i nodi A, B e C...")
-A = Nodo("A", [Arco("C", 9)])
-B = Nodo("B", [])
-C = Nodo("C", [])
-
-print("\nAggiungo adiacenze casuali...")
-test = B.newAd("A", "rand")
-C.newAd("A", "rand")
-C.newAd("B", "rand")
-C.newAd("C", "rand")
-A.newAd("B", "rand")
-
-print("\nStampo risultati...")
-print(A)
-print(B)
-print(C)
-
-print("\nRimuovo arco fra A e C...")
-A.removeAd("C")
-print(A)
-
-print("\nModifichiamo il peso dell'arco fra B e A (settiamo a 11)")
-B.editAd("A", 11)
-print(B)
-
-print("\nGeneriamo un nuovo nodo C...")
-D = Arco("B", 6)
-print(C)
-
-print("\nAggiungo arco fra B e C, di peso 5...")
-B.newAd("C", 5)
-print(B)
+print("Generazione Grafo Casuale")
+g = Grafo("mioGrafo", 11)
+print(g)
