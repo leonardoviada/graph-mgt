@@ -22,6 +22,7 @@
 #  """
 
 import random
+import utilities as u
 
 
 class Grafo:
@@ -47,6 +48,7 @@ class Grafo:
             if(self.nodesList[n].label == label):
                 trovato = True
                 return self.nodesList[n]
+        u.errore(1, ("Nodo '" + label + "' Non Trovato"))
 
     def seed(self, nNodes):
         charSet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
@@ -56,15 +58,15 @@ class Grafo:
             temp = charSet[n]
             charSetAvail += temp
             self.newNode(temp, [])
-            if(n < nNodes - 1):
-                self.nodesList[n].newAd(
-                    charSet[n + 1], random.randrange(1, 21))
-                for x in range(random.randrange(0, 3)):
-                    self.nodesList[n].newAd(random.choice(
-                        charSetAvail), random.randrange(1, 21))
+
+        for n in range(nNodes - 1):
+            self.nodesList[n].newAd(
+                self, charSet[n + 1], random.randrange(1, 21))
+            for x in range(random.randrange(0, 3)):
+                self.nodesList[n].newAd(self, random.choice(
+                    charSetAvail), random.randrange(1, 21))
 
     # toString()
-
     def __str__(self):
         return "label: " + self.label + ", nodesList: " + str([str(item) for item in self.nodesList])
 
@@ -92,12 +94,15 @@ class Nodo:
     # RICEVE:
     #   label del nodo di destinazione
     #   peso dell'arco da creare - se passiamo solo (label, "rand") viene generato un peso random da 1 a 21 -
-    def newAd(self, nextHop, weight):
-        # TODO: implementare controllo su labels del grafo
-        if (weight == "rand"):
-            weight = random.randrange(1, 21)
-        newArco = Arco(nextHop, weight)
-        self.adList.append(newArco)
+    def newAd(self, g, nextHop, weight):
+        if(isinstance(g.findNodeByLabel(nextHop), object)):
+            if (weight == "rand"):
+                weight = random.randrange(1, 21)
+            newArco = Arco(nextHop, weight)
+            self.adList.append(newArco)
+            return newArco
+
+        u.errore(1, "Nodo Non Trovato")
 
     # Rimuove Adiacenza
     def removeAd(self, nextHop):
@@ -110,17 +115,11 @@ class Nodo:
 
     # Cambia Peso Adiacenza
     def editAd(self, nextHop, newWeight):
-        trovato = False
-        n = 0
-        while (n < len(self.adList) and not trovato):
-            if (self.adList[n].nextHop == nextHop):
-                trovato = True
-                self.adList[n].weight = newWeight
-                return 0
 
-        return -1
+        self.adList[n].weight = newWeight
 
     # Cambia Nome Nodo
+
     def editLabel(self, newLabel):
         # TODO: implementare controllo su labels del grafo
         self.label = newLabel
