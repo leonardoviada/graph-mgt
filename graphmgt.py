@@ -46,9 +46,9 @@ class Grafo:
         n = 0
         for n in range(len(self.nodesList)):
             if(self.nodesList[n].label == label):
-                trovato = True
                 return self.nodesList[n]
-        u.errore(1, ("Nodo '" + label + "' Non Trovato"))
+        return -1
+        # u.errore(1, ("Nodo '" + label + "' Non Trovato"))
 
     def seed(self, nNodes):
         charSet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
@@ -95,14 +95,14 @@ class Nodo:
     #   label del nodo di destinazione
     #   peso dell'arco da creare - se passiamo solo (label, "rand") viene generato un peso random da 1 a 21 -
     def newAd(self, g, nextHop, weight):
-        if(isinstance(g.findNodeByLabel(nextHop), object)):
+        if(g.findNodeByLabel(nextHop != -1)):
             if (weight == "rand"):
                 weight = random.randrange(1, 21)
             newArco = Arco(nextHop, weight)
             self.adList.append(newArco)
             return newArco
 
-        u.errore(1, "Nodo Non Trovato")
+        u.errore(1, ("Nodo '" + label + "' Non Trovato"))
 
     # Rimuove Adiacenza
     def removeAd(self, nextHop):
@@ -115,13 +115,12 @@ class Nodo:
 
     # Cambia Peso Adiacenza
     def editAd(self, nextHop, newWeight):
-
         self.adList[n].weight = newWeight
 
     # Cambia Nome Nodo
-
-    def editLabel(self, newLabel):
-        # TODO: implementare controllo su labels del grafo
+    def editLabel(self, g, newLabel):
+        if(g.findNodeByLabel(newLabel) != -1):
+            u.errore(1, ("Nodo '" + newLabel + "' Già Presente in Grafo"))
         self.label = newLabel
 
     # toString()
